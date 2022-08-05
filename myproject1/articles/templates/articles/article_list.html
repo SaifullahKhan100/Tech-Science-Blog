@@ -1,0 +1,48 @@
+{% extends 'base_layout.html' %}
+
+{% block content%}
+    <div class="search">
+    <form method="GET" action="" class="search" >
+  <input type="text" name='q' placeholder="search"class="button1"/>
+  <input type="submit" value="Search"class="button2"/>
+    </form>
+        </div>
+
+    <h1>Articles List</h1>
+    <div class="panel-heading">
+    <h2><i>Tags</i></h2>
+
+    <div class="panel-body">
+    <ul class="tags">
+        {% for tag in tags %}
+        <li><a href="{% url 'articles:tagged' tag.slug %}">{{ tag.name }}</a> </li>
+        {% empty %}
+            <li><a href="/articles/">Click here to show tags</a></li>
+        <li>No Tags Right now</li>
+        {% endfor %}
+    </ul>
+    </div>
+    </div>
+    <div class="articles">
+    {% for article in articles %}
+        <div class="article">
+             <h2><a href="{% url 'articles:detail' slug=article.slug %}"><h2><b><i><u>{{ article.title }}</u></i></b></h2>
+
+            <p>{{ article.snippet }}</p>
+            <p>{{ article.date }}</p>
+                <ul>
+                  {% for tag in article.tags.all %}
+                    <li> {{ tag.name }} </li>
+                  {% endfor %}
+                </ul>
+            <img src="{{ article.thumb.url }}" alt="" height="150" width="150">
+             </a>
+
+
+                <p class="author">added by {{ article.author.username }}</p>
+            </a>
+        </div>
+    {% endfor %}
+
+    </div>
+{% endblock %}

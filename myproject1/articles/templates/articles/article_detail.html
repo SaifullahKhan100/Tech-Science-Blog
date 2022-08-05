@@ -1,0 +1,41 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+<div class="article-detail">
+    <div class="article">
+        <img src="{{ article.thumb.url }}" />
+        <h2>{{ article.title }}</h2>
+        <h3>Written by {{ article.author.username }}</h3>
+        <p>{{ article.body }}</p>
+        <p>{{ article.date }}</p>
+        <p>{{article.tags.all|join:", "}}</p>
+    </div>
+</div>
+
+<hr>
+    {% if article.author == request.user %}
+<div class="section-1" style="float: right;">
+<a href="{% url 'articles:article_edit' id=article.id %}">
+    <button type="button" class="btn btn-outline-success">Edit</button>
+</a>
+</div>
+    {% endif %}
+
+
+<form method="post">
+  {% csrf_token %}
+  {{ comment_form.as_p }}
+  <input type="submit" value="Submit" class="btn btn-outline.success">
+
+</form>
+
+{% for comment in article.comments.all %}
+    <div class="comment">
+        <div class="date">{{ comment.created_date }}</div>
+        <strong>{{ comment.author }}</strong>
+        <p>{{ comment.text|linebreaks }}</p>
+    </div>
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+{% endblock %}

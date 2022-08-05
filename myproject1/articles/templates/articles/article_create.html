@@ -1,0 +1,25 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <div class="create-article">
+        <h2>Create an Awesome New Article</h2>
+        <form class="site-form" action="{% url 'articles:create' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Create">
+        </form>
+    </div>
+    <script src="/static/slugify.js"></script>
+{% endblock %}
+
+
+<hr>
+<div class="main-comment-section">
+    {{ comments.count}} Comment{{ comments|pluralize }}
+    {% for comment in comments %}
+    <blockquote class="blockquote">
+      <p class="mb-0">{{ comment.content }}</p>
+      <footer class="blockquote-footer">by <cite title="Source Title">{{ comment.user|capfirst}}</cite></footer>
+</blockquote>
+    {% endfor %}
+</div>
